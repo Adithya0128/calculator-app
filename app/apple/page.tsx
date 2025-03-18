@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 
 export default function Home() {
@@ -16,7 +17,9 @@ export default function Home() {
 
   const calculateResult = () => {
     try {
-      setResult(eval(input).toString()); // ⚠️ Be cautious with eval
+      // Fix: Convert × and ÷ to * and / before evaluation
+      const formattedInput = input.replace(/×/g, "*").replace(/÷/g, "/");
+      setResult(eval(formattedInput).toString()); 
     } catch {
       setResult("Error");
     }
@@ -36,7 +39,7 @@ export default function Home() {
           <button className="btn gray" onClick={clearInput}>AC</button>
           <button className="btn gray">+/-</button>
           <button className="btn gray">%</button>
-          <button className="btn orange" onClick={() => handleClick("/")}>÷</button>
+          <button className="btn orange" onClick={() => handleClick("÷")}>÷</button>
 
           {/* Numbers & Operators */}
           {[7, 8, 9, "×", 4, 5, 6, "-", 1, 2, 3, "+"].map((val, i) => (
