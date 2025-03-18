@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { HomeIcon } from "@heroicons/react/24/solid";
+
+
 
 export default function SamsungCalculator() {
   const [showSplash, setShowSplash] = useState(true);
@@ -60,6 +64,14 @@ export default function SamsungCalculator() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Home Button */}
+      {!showSplash && (
+    <Link href="/" className="absolute top-4 left-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-200 transition">
+        <HomeIcon className="w-6 h-6 text-gray-900" />
+    </Link>
+)}
+
 
       {/* Calculator (Shows After Splash) */}
       {!showSplash && (

@@ -18,11 +18,17 @@ const Navbar = () => {
 
   return (
     <motion.nav 
-      className="bg-black text-white p-4 flex justify-center space-x-6"
+      className="bg-black text-white p-4 flex items-center justify-center space-x-6"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
+      {/* Home Button */}
+      <Link href="/" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200">
+        Home
+      </Link>
+
+      {/* Navigation Links */}
       {links.map((link, index) => (
         <motion.div 
           key={link.href} 
