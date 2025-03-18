@@ -1,18 +1,42 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-export default function Navbar() {
-  const pathname = usePathname(); // Get current route
+const Navbar = () => {
+  const pathname = usePathname();
 
-  if (pathname === "/") return null; // Hide navbar on the homepage
+  // Hide navbar on homepage ("/")
+  if (pathname === "/") return null;
+
+  const links = [
+    { href: "/apple", label: "Apple Calculator" },
+    { href: "/samsung", label: "Samsung Calculator" },
+    { href: "/xiaomi", label: "Xiaomi Calculator" },
+  ];
 
   return (
-    <nav className="bg-black text-white p-4 flex justify-center space-x-6">
-      <Link href="/apple" className="hover:text-gray-400">Apple Calculator</Link>
-      <Link href="/samsung" className="hover:text-gray-400">Samsung Calculator</Link>
-      <Link href="/xiaomi" className="hover:text-gray-400">Xiaomi Calculator</Link>
-    </nav>
+    <motion.nav 
+      className="bg-black text-white p-4 flex justify-center space-x-6"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {links.map((link, index) => (
+        <motion.div 
+          key={link.href} 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: index * 0.2, duration: 0.5 }}
+        >
+          <Link href={link.href} className="hover:text-gray-400">
+            {link.label}
+          </Link>
+        </motion.div>
+      ))}
+    </motion.nav>
   );
-}
+};
+
+export default Navbar;
