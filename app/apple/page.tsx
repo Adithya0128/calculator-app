@@ -1,10 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function Home() {
+export default function AppleCalculator() {
+  const [showSplash, setShowSplash] = useState(true);
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 5000); // 5 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleClick = (value: string) => {
     setInput((prev) => prev + value);
@@ -17,47 +28,67 @@ export default function Home() {
 
   const calculateResult = () => {
     try {
-      // Fix: Convert × and ÷ to * and / before evaluation
       const formattedInput = input.replace(/×/g, "*").replace(/÷/g, "/");
-      setResult(eval(formattedInput).toString()); 
+      setResult(eval(formattedInput).toString());
     } catch {
       setResult("Error");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
-      <div className="bg-gray-900 p-6 rounded-3xl shadow-lg w-80">
-        {/* Display Screen */}
-        <div className="text-right text-white text-4xl font-light p-4 mb-4 bg-gray-800 rounded-lg min-h-[80px]">
-          {result || input || "0"}
+    <div className="flex items-center justify-center min-h-screen bg-black relative">
+      {/* Splash Screen Animation */}
+      <AnimatePresence>
+        {showSplash && (
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center bg-black"
+            initial={{ scale: 1, opacity: 1 }}
+            animate={{ scale: 1.2, opacity: 0 }}
+            transition={{ duration: 5, ease: "easeOut" }}
+            exit={{ opacity: 0 }}
+          >
+            <Image 
+              src="/apple-logo.png" 
+              alt="Apple Logo" 
+              width={500} 
+              height={500} 
+              className="max-w-[80vw] max-h-[80vh] w-auto h-auto object-contain"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Calculator - Only show after splash */}
+      {!showSplash && (
+        <div className="bg-gray-900 p-6 rounded-3xl shadow-lg w-80">
+          {/* Display Screen */}
+          <div className="text-right text-white text-4xl font-light p-4 mb-4 bg-gray-800 rounded-lg min-h-[80px]">
+            {result || input || "0"}
+          </div>
+
+          {/* Buttons Grid */}
+          <div className="grid grid-cols-4 gap-2">
+            <button className="btn gray" onClick={clearInput}>AC</button>
+            <button className="btn gray">+/-</button>
+            <button className="btn gray">%</button>
+            <button className="btn orange" onClick={() => handleClick("÷")}>÷</button>
+
+            {[7, 8, 9, "×", 4, 5, 6, "-", 1, 2, 3, "+"].map((val, i) => (
+              <button 
+                key={i} 
+                className={`btn ${typeof val === "string" ? "orange" : "dark"}`} 
+                onClick={() => handleClick(val.toString())}
+              >
+                {val}
+              </button>
+            ))}
+
+            <button className="btn dark col-span-2" onClick={() => handleClick("0")}>0</button>
+            <button className="btn dark" onClick={() => handleClick(".")}>.</button>
+            <button className="btn orange" onClick={calculateResult}>=</button>
+          </div>
         </div>
-
-        {/* Buttons Grid */}
-        <div className="grid grid-cols-4 gap-2">
-          {/* Top Row */}
-          <button className="btn gray" onClick={clearInput}>AC</button>
-          <button className="btn gray">+/-</button>
-          <button className="btn gray">%</button>
-          <button className="btn orange" onClick={() => handleClick("÷")}>÷</button>
-
-          {/* Numbers & Operators */}
-          {[7, 8, 9, "×", 4, 5, 6, "-", 1, 2, 3, "+"].map((val, i) => (
-            <button 
-              key={i} 
-              className={`btn ${typeof val === "string" ? "orange" : "dark"}`} 
-              onClick={() => handleClick(val.toString())}
-            >
-              {val}
-            </button>
-          ))}
-
-          {/* Bottom Row */}
-          <button className="btn dark col-span-2" onClick={() => handleClick("0")}>0</button>
-          <button className="btn dark" onClick={() => handleClick(".")}>.</button>
-          <button className="btn orange" onClick={calculateResult}>=</button>
-        </div>
-      </div>
+      )}
 
       {/* Tailwind Styles */}
       <style jsx>{`
