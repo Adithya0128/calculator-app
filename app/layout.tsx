@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
 import "./globals.css";
+import Navbar from "./components/Navbar"; // Import the Navbar
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,14 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}>
-        {/* Navbar */}
-        <nav className="bg-black text-white p-4 flex justify-center space-x-6">
-          <Link href="/apple" className="hover:text-gray-400">Apple Calculator</Link>
-          <Link href="/samsung" className="hover:text-gray-400">Samsung Calculator</Link>
-          <Link href="/xiaomi" className="hover:text-gray-400">Xiaomi Calculator</Link>
-        </nav>
-
-        {/* Page Content */}
+        <Navbar /> {/* Navbar now handled in its own Client Component */}
         <main className="p-4">{children}</main>
       </body>
     </html>
