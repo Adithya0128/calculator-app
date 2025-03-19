@@ -52,7 +52,10 @@ const Navbar = () => {
         placeholder="Search Calculators..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="p-2 rounded text-black w-64"
+        className="p-2 rounded-lg text-white w-96 bg-gray-800 border-2 border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg placeholder-gray-400 shadow-lg transition duration-300 ease-in-out"
+        style={{
+          textShadow: "0px 0px 10px rgba(255, 255, 255, 0.8)",
+        }}
       />
 
       {/* Navigation Links with Pagination */}
